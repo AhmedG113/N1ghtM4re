@@ -23,15 +23,20 @@ app.post("/login", (req, res) => {
 
   db.get(query, (err, row) => {
     if (row) {
-      res.redirect("/home");
-    } else {
-      res.send("ACCESS DENIED");
+      return res.redirect("/home");
     }
+    return res.send("ACCESS DENIED");
   });
 });
 
 app.get("/home", (req, res) => {
   res.sendFile(path.join(__dirname, "views/home.html"));
+});
+
+app.get("/debug-db", (req, res) => {
+  db.all("SELECT * FROM users", (err, rows) => {
+    res.json(rows);
+  });
 });
 
 app.listen(1596, () => console.log("Challenge running on port 1596"));
